@@ -10,12 +10,12 @@ terraform {
 provider "docker" {}
 
 resource "docker_image" "ngrinder-controller" {
-  name         = "ngrinder/controller:3.5.4"
+  name         = "ngrinder/controller:latest"
   keep_locally = true
 }
 
 resource "docker_image" "ngrinder-agent" {
-  name         = "ngrinder/agent:3.5.4"
+  name         = "ngrinder/agent:latest"
   keep_locally = true
 }
 
@@ -25,6 +25,10 @@ resource "docker_container" "ngrinder-controller" {
   ports {
     internal = 80
     external = 80
+  }
+  volumes {
+    host_path = "${abspath(path.root)}/controller-data"
+    container_path = "/opt/ngrinder-controller"
   }
 }
 
